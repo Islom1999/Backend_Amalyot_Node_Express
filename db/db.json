@@ -1,27 +1,5 @@
 [
     {
-        "id": "ascasfaas564fas0",
-        "title": "Noutbook Aser",
-        "amount": 20000000,
-        "region": "Toshkent",
-        "image": "assets/elon/elon6.jpg",
-        "description": "Zo'r Noutbook"
-    },
-    {
-        "id": "85aa35a7-11cc-4dcc-b660-d81b52f1012d",
-        "title": "asasdA",
-        "amount": "23432",
-        "region": "Toshkent",
-        "image": "https://picsum.photos/800/800"
-    },
-    {
-        "id": "a6e437e5-9c12-4920-bc52-548f216a522a",
-        "title": "asdsada",
-        "amount": "21321",
-        "region": "Navoiy",
-        "image": "https://picsum.photos/800/800"
-    },
-    {
         "id": "efab3479-83f1-40b1-befd-0553f5d3fc55",
         "title": "hp i-5 7000 ",
         "amount": "5000000",
@@ -29,10 +7,11 @@
         "image": "https://picsum.photos/800/800"
     },
     {
-        "id": "6d5c3faa-9b7b-4255-8bbb-286a1c95fe07",
-        "title": "asdsdasfdsa",
-        "amount": "232132112",
-        "region": "Andijon",
-        "image": "https://picsum.photos/800/800"
+        "id": "bf3a861d-fa0c-40bf-8447-89359206724f",
+        "title": "Noutbook Aser",
+        "amount": "10000000",
+        "region": "Samarqand",
+        "image": "assets/elon/elon6.jpg",
+        "description": "Zo'r Noutbook"
     }
 ]

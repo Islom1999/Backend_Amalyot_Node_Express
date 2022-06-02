@@ -64,6 +64,10 @@
             </div>
             <a href="#" type="button" class="btn btn-outline-secondary">+998911234567</a>
             <a href="#" type="button" class="btn mt-3 btn-success">Muallifning boshqa e'lonlari</a>
+            <a href="/posters/{{poster.id}}/edit" type="button" class="btn mt-3 btn-warning">E'lonni o'zgartirish</a>
+            <form class="d-grid" action="/posters/{{poster.id}}/delete" method="POST">
+                <button type="submit" class="btn mt-3 btn-danger">E'lonni o'chirish</button>
+            </form>
             </div>
         </div>
         </div>
