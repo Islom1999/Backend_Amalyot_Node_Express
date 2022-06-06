@@ -2,8 +2,14 @@ const express = require('express')
 const path = require('path')
 const dotenv = require('dotenv')
 const {engine} = require('express-handlebars')
+
+const connectDB = require('./config/db')
 const homeRoutes = require('./routes/homeRoutes')
 const posterRoutes = require('./routes/posterRoutes')
+
+// connect Mongose 
+
+connectDB()
 
 // ENV variable start initilize
 dotenv.config()
@@ -20,6 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 // initilize template engine (handlebars)
 app.engine('.hbs', engine({extname: '.hbs'}))
 app.set('view engine', 'hbs')
+
+
 
 // initilize routes
 app.use('/', homeRoutes)

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
             <div class="card">
-                <img src="{{poster.image}}" class="rounded mt-lg-3 mb-lg-3 img-fluid img-poster-page mx-auto d-block" alt="...">
+                <img src="{{url}}{{poster.image}}" class="rounded mt-lg-3 mb-lg-3 img-fluid img-poster-page mx-auto d-block" alt="...">
             </div>
             </div>
         </div>
@@ -17,26 +17,14 @@
                 <div class="row">
                     <div class="card">
                     <div class="mb-3"><p class="card-text"><small class="text-muted">Joylangan sana - 11.07.2021 16:45</small></p></div>
-                    <h3 class="poster-page-title">Посуточно без загс принимаем гостиница квартира 24/7</h3>
+                    <h3 class="poster-page-title">{{poster.title}}</h3>
                     <h1 class="poster-page-amount mb-5">{{poster.amount}} so'm</h1>
                     <h5>Tavsif</h5>
-                    <p>Гостиница/квартира в центре Ташкента
-                        Все удобства
-                        Место спокойное
-                        Отдельные двухместные номера с душем кондиционером
-                        плазма
-                        Wi-fi
-                        
-                        или пишите телеграм
-                        есть локация
-                        
-                        Услуги лицензированы
-                        Лицензия UZ.SMT.02362.0112600
-                        ЧП "EAGLE and TAILS"</p>
+                    {{{poster.description}}}
                         <hr>
                         <div class="d-flex justify-content-between">
-                        <p>ID: {{[poster.id]}}</p>
-                        <p>Ko'rildi: 1025</p>
+                        <p>ID: {{poster._id}}</p>
+                        <p>Ko'rildi: {{poster.visits}}</p>
                         </div>
                     </div>
                 </div>
@@ -52,7 +40,7 @@
             <h4 class="mb-5">Foydalanuvchi</h4>
             <div class="d-flex justify-content-between">
                 <img 
-                src="{{poster.image}}" 
+                src="{{url}}{{poster.image}}" 
                 class="rounded-circle img-fluid" 
                 alt="Cinque Terre"
                 style="width: 100px; height: 100px">
@@ -64,8 +52,8 @@
             </div>
             <a href="#" type="button" class="btn btn-outline-secondary">+998911234567</a>
             <a href="#" type="button" class="btn mt-3 btn-success">Muallifning boshqa e'lonlari</a>
-            <a href="/posters/{{poster.id}}/edit" type="button" class="btn mt-3 btn-warning">E'lonni o'zgartirish</a>
-            <form class="d-grid" action="/posters/{{poster.id}}/delete" method="POST">
+            <a href="/posters/{{poster._id}}/edit" type="button" class="btn mt-3 btn-warning">E'lonni o'zgartirish</a>
+            <form class="d-grid" action="/posters/{{poster._id}}/delete" method="POST">
                 <button type="submit" class="btn mt-3 btn-danger">E'lonni o'chirish</button>
             </form>
             </div>

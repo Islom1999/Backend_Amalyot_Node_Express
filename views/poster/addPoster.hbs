@@ -1,8 +1,11 @@
+{{!-- ckeditor 4 link --}}
+<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+
 <div class="container mtt">
     <div class="row">
     <div class="col-lg-12">
         <div class="card p-4 mb-5">
-        <form action="/posters/add" method="POST">
+        <form action="/posters/add" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
             <label for="title" class="form-label">E'lon sarlavhasi</label>
             <input 
@@ -47,16 +50,19 @@
             <label for="image" class="form-label">Rasm tanlang</label>
             <input 
             class="form-control" 
-            type="text" 
+            type="file" 
             id="image"
             name="image">
             </div>
             <div class="mb-3">
-            <label for="describe" class="form-label">Tarif</label>
-            <textarea name="description"></textarea>
-            <!-- <script>
-                CKEDITOR.replace( 'describe' );
-            </script> -->
+                
+            <label for="description" class="form-label">Tarif</label>
+            {{!-- textarea CKEDITOR  --}}
+            <textarea name="description" id="description"></textarea>
+            <script>
+                CKEDITOR.replace( 'description' );
+            </script>
+
             </div>
             <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary">Kiritish</button>
@@ -66,3 +72,4 @@
     </div>
     </div>
 </div>
+
