@@ -2,23 +2,40 @@ const express = require('express')
 const path = require('path')
 const dotenv = require('dotenv')
 const {engine} = require('express-handlebars')
+const session = require('express-session')
+const MongoStore = require('connect-mongodb-session')(session)
 
 const connectDB = require('./config/db')
-const homeRoutes = require('./routes/homeRoutes')
-const posterRoutes = require('./routes/posterRoutes')
 
-// connect Mongose 
-
-connectDB()
 
 // ENV variable start initilize
 dotenv.config()
 
+// connect Mongose 
+connectDB()
+
+
 const app = express()
+
+// initilize to daabase
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: process.env.MONGO_URI
+})
 
 // Body Parser express initilize
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+
+// sessoin configuration
+app.use(session({
+    secret: process.env.SECTION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store
+}))
+
+//req.session.user = "Islom"
 
 // set static folder public
 app.use(express.static(path.join(__dirname, 'public')))
@@ -30,8 +47,12 @@ app.set('view engine', 'hbs')
 
 
 // initilize routes
-app.use('/', homeRoutes)
-app.use('/posters', posterRoutes)
+app.use('/', require('./routes/homeRoutes'))
+app.use('/posters', require('./routes/posterRoutes'))
+app.use('/auth', require('./routes/authRoutes'))
+app.use('/profile', require('./routes/userRoutes'))
+
+
 
 const PORT = process.env.PORT || 3000
 

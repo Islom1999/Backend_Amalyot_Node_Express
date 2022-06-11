@@ -62,17 +62,21 @@
                     <div class="card mb-3">
                         <div class="row g-0">
                         <div class="col-md-3">
-                            <a href="#" class="poster-link"><img src="{{../url}}{{image}}" class="img-fluid rounded-start img-board" alt="..."></a>
+                            <a href="/posters/{{_id}}" class="poster-link">
+                                <img src="{{../url}}{{image}}" class="img-fluid rounded-start img-board" alt="...">
+                            </a>
                         </div>
                         <div class="col-md-9">
                             <div class="card-body flex-poster-body">
                             <div class="flex-poster-title">
-                                <div class="title-item-one"><a href="/posters/{{_id}}" class="poster-link">
-                                <span class="card-title poster-title poster-link poster-flexible">{{title}}</span>
-                                </a></div>
+                                <div class="title-item-one">
+                                    <a href="/posters/{{_id}}" class="poster-link">
+                                    <span class="card-title poster-title poster-link poster-flexible">{{title}}</span>
+                                    </a>
+                                </div>
                                 <h5 class="title-item-two">{{amount}} SO'M</h5>
                             </div>
-                            <div><p class="card-text"><small class="text-muted">{{region}} - 11.07.2021 16:45</small></p></div>
+                            <div><p class="card-text"><small class="text-muted">{{region}} - {{createdAt}}</small></p></div>
                             </div>
                         </div>
                         </div>

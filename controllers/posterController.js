@@ -1,4 +1,5 @@
 const Poster = require('../models/posterModel')
+const User = require('../models/userModel')
 
 
 // @Route      GET  /posters 
@@ -26,6 +27,7 @@ const getOnePosterPage = async (req,res) => {
         res.render('poster/posterPage', {
             title: poster.title,
             url: process.env.URL, 
+            user: req.session.user, 
             poster
         })
     }catch(err){
@@ -49,15 +51,25 @@ const addNewPosterPage = (req,res) => {
 // @access     Privide
 const addNewPoster = async (req,res) => {
     try{
-        const poster = {
+        const newPoster = new Poster({
             title: req.body.title,
             amount: req.body.amount,
             region: req.body.region,
             image: 'uploads/' + req.file.filename,
             description: req.body.description,
-        }
-        await Poster.create(poster)
-        res.redirect('/posters')
+        })
+
+        await User.findByIdAndUpdate(req.session.user._id, {
+            $push: {posters: newPoster},
+            new: true,
+            upsert: true 
+        })
+        await newPoster.save((err, posterSaved) => {
+            if(err) throw err
+            const posterId = posterSaved._id
+            res.redirect('/posters/' + posterId)  
+        })
+        
         
     }catch (err) { 
         console.log(err) 
@@ -90,15 +102,26 @@ const updatePoster = async (req,res) => {
         const editedPoster = {
             title: req.body.title,
             amount: req.body.amount,
-            image: req.body.image,
+            image: 'uploads/' + req.file.filename,
+            region: req.body.region,
+            description: req.body.description
+        }
+        await Poster.findByIdAndUpdate(req.params.id, editedPoster)
+        res.redirect('/posters') 
+    }
+    catch(err){
+        /*if(err == 'undefined'){
+            console.log('salom')
+        }*/
+        const editedPoster = {
+            title: req.body.title,
+            amount: req.body.amount,
+            image:  req.body.image,
             region: req.body.region,
             description: req.body.description
         }
         await Poster.findByIdAndUpdate(req.params.id, editedPoster)
         res.redirect('/posters')
-    }
-    catch(err){
-        console.log(err)
     }
 }
 
