@@ -6,10 +6,12 @@ const User = require('../models/userModel')
 // @access     Public
 
 const getLoginPage = (req, res) => {
-    res.render('auth/login', {
-        title: 'Login',
-        url: process.env.URL
-    })
+    if(!req.session.isLogin){
+        res.render('auth/login', {
+            title: 'Login',
+            url: process.env.URL
+        })
+    }
 }
 
 // @Route      GET  /auth/signup 
@@ -17,10 +19,12 @@ const getLoginPage = (req, res) => {
 // @access     Public
 
 const getRegisterPage = (req, res) => {
-    res.render('auth/signup', {
-        title: 'Sign Up',
-        url: process.env.URL
-    })
+    if(!req.session.isLogin){
+        res.render('auth/signup', {
+            title: 'Sign Up',
+            url: process.env.URL
+        })
+    }
 }
 
 // @Route      post  /auth/signup 
@@ -28,29 +32,31 @@ const getRegisterPage = (req, res) => {
 // @access     Public
 
 const registerNewUser = async (req, res) => {  
-    try{
-        const {email, username, phone, password, password2} = req.body
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password, salt)
-        const userExist = await User.findOne({email})
+    if(!req.session.isLogin){
+        try{
+            const {email, username, phone, password, password2} = req.body
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+            const userExist = await User.findOne({email})
 
-        if(userExist){
-            return res.redirect('/auth/signup')
+            if(userExist){
+                return res.redirect('/auth/signup')
+            }
+            if(password !== password2){
+                return res.redirect('/auth/signup')
+            }
+            await User.create({
+                email,
+                username,
+                phone,
+                password: hashedPassword
+            })
+
+            return res.redirect('/auth/login')
+
+        }catch(err){
+            console.log(err)
         }
-        if(password !== password2){
-            return res.redirect('/auth/signup')
-        }
-        await User.create({
-            email,
-            username,
-            phone,
-            password: hashedPassword
-        })
-
-        return res.redirect('/auth/login')
-
-    }catch(err){
-        console.log(err)
     }
 }
 
@@ -83,9 +89,21 @@ const loginUser = async (req, res) => {
     }
 }
 
+// @Route      post  /auth/logout 
+// @Desc       logout user
+// @access     private
+
+const logout = (req,res) => {
+    req.session.destroy(() => {
+        res.redirect("/")
+    })
+}
+
+
 module.exports = {
     getLoginPage, 
     getRegisterPage, 
     registerNewUser,
-    loginUser
+    loginUser,
+    logout
 }

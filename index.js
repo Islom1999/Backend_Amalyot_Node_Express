@@ -44,8 +44,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.engine('.hbs', engine({extname: '.hbs'}))
 app.set('view engine', 'hbs')
 
-
-
 // initilize routes
 app.use('/', require('./routes/homeRoutes'))
 app.use('/posters', require('./routes/posterRoutes'))

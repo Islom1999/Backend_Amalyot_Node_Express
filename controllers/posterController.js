@@ -1,7 +1,6 @@
 const Poster = require('../models/posterModel')
 const User = require('../models/userModel')
 
-
 // @Route      GET  /posters 
 // @Desc       get all posters
 // @access     Public
@@ -12,6 +11,7 @@ const getPosterPage = async (req,res) => {
             title: 'Poster Page',
             url: process.env.URL,
             posters: posters.reverse()
+            
         })
     }catch(err){
         console.log(err)
@@ -42,7 +42,9 @@ const getOnePosterPage = async (req,res) => {
 const addNewPosterPage = (req,res) => {
     res.render('poster/addPoster', {
         title: 'Yangi elon qo\'shish',
-        url: process.env.URL
+        url: process.env.URL,
+        user: req.session.user,
+        isLogin: req.session.isLogin,
     })
 }
 

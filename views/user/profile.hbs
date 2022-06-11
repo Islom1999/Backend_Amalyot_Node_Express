@@ -24,7 +24,13 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <p>ID: {{user._id}}</p>
-                <p>E'lonlar soni: 10</p>
+                <p>E'lonlar soni:
+                    {{#if user.posters}} 
+                        {{user.posters.length}}
+                    {{else}}
+                        0
+                    {{/if}}
+                </p>
             </div>
             </div>
             {{/if}}
