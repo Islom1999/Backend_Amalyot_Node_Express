@@ -23,11 +23,16 @@ const getPosterPage = async (req,res) => {
 // @access     public
 const getOnePosterPage = async (req,res) => {
     try{
-        const poster = await  Poster.findByIdAndUpdate(req.params.id, { $inc: { visits: 1 } }, {new: true}).lean()
+        const poster = await  Poster
+            .findByIdAndUpdate(req.params.id, { $inc: { visits: 1 } }, {new: true})
+            .populate("author")
+            .lean()
+
         res.render('poster/posterPage', {
             title: poster.title,
             url: process.env.URL, 
             user: req.session.user, 
+            author: poster.author,
             poster
         })
     }catch(err){
@@ -57,8 +62,9 @@ const addNewPoster = async (req,res) => {
             title: req.body.title,
             amount: req.body.amount,
             region: req.body.region,
-            image: 'uploads/' + req.file.filename,
             description: req.body.description,
+            image: 'uploads/' + req.file.filename,
+            author: req.session.user._id
         })
 
         await User.findByIdAndUpdate(req.session.user._id, {

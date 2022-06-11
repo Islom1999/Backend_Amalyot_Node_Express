@@ -10,23 +10,23 @@
 
         <div class="col-lg-8">
         <div class="row">
-            {{#if user}}
+            {{#if userProfile}}
             <div class="card">
             <h3 class="poster-page-title">Foydalanuvchi haqida ma'lumot</h3>
-            <h1 class="poster-page-amount mb-5">{{user.username}}</h1>
+            <h1 class="poster-page-amount mb-5">{{userProfile.username}}</h1>
             <h4>Qo'shimcha ma'lumotlar</h4>
             <hr>
             <div>
-                <h5 class="">Username: <small class="text-primary">{{user.username}}</small></h5>
-                <h5 class="">Telefon: <small class="text-primary">{{user.phone}}</small></h5>
+                <h5 class="">Username: <small class="text-primary">{{userProfile.username}}</small></h5>
+                <h5 class="">Telefon: <small class="text-primary">{{userProfile.phone}}</small></h5>
                 
             </div>
             <hr>
             <div class="d-flex justify-content-between">
-                <p>ID: {{user._id}}</p>
+                <p>ID: {{userProfile._id}}</p>
                 <p>E'lonlar soni:
-                    {{#if user.posters}} 
-                        {{user.posters.length}}
+                    {{#if userProfile.posters}} 
+                        {{userProfile.posters.length}}
                     {{else}}
                         0
                     {{/if}}
@@ -36,7 +36,9 @@
             {{/if}}
         </div>
         </div>
-        <a href="/profile/change" class="btn mt-3 btn-success">O'zgartirish</a>
+        {{#if isMe}}
+            <a href="/profile/change" class="btn mt-3 btn-success">O'zgartirish</a>
+        {{/if}}
     </div>
     </div>
 </div>
@@ -61,7 +63,7 @@
                             <a href="/posters/{{_id}}" class="poster-link"><span class="card-title poster-title poster-link">{{title}}</span></a>
                         </div>
                         <p class="card-text" style="margin: 0">{{region}}</p>
-                        <p class="card-text">- {{createdAt}}</p>
+                        <p class="card-text">- {{formatDate createdAt}}</p>
                         <h5 class="card-subtitle mb-2">{{amount}} SO'M</h5>
                         </div>
                     </div>

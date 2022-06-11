@@ -1,6 +1,9 @@
 <div class="container mtt">
     <div class="row">
     <div class="col-lg-8 offset-lg-2">
+        {{#if loginErr}}
+            <div class="alert alert-danger" role="alert">{{loginErr}}</div>
+        {{/if}}
         <div class="card p-4 mb-5">
         <form action="/auth/login" method="POST">
             <div class="mb-3">

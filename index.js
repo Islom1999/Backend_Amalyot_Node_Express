@@ -2,10 +2,12 @@ const express = require('express')
 const path = require('path')
 const dotenv = require('dotenv')
 const {engine} = require('express-handlebars')
+const Handlebars = require('handlebars')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
-
+const flash = require('connect-flash')
 const connectDB = require('./config/db')
+const helpers = require('./utils/hbsHelpers')
 
 
 // ENV variable start initilize
@@ -27,6 +29,9 @@ const store = new MongoStore({
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+// Register Handlebars Helpers
+helpers(Handlebars)
+
 // sessoin configuration
 app.use(session({
     secret: process.env.SECTION_SECRET,
@@ -35,7 +40,7 @@ app.use(session({
     store
 }))
 
-//req.session.user = "Islom"
+app.use(flash())
 
 // set static folder public
 app.use(express.static(path.join(__dirname, 'public')))
