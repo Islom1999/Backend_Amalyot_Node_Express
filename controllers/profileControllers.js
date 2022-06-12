@@ -25,10 +25,15 @@ const getProfilePage = async (req, res) => {
             isMe
         })
     }catch(err){ 
-        console.log(err)
+        if(!req.session.user){
+            res.redirect('/auth/login')
+        }else{
+            console.log(err)
+        }
+        
     }
 }
 
 module.exports = {
     getProfilePage
-}
+} 

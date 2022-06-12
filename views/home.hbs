@@ -9,7 +9,7 @@
             <p>Bu sayt orqali siz o'z e'lonlaringizni bepulga joylashtirib borishingiz
             mumkin bo'ladi. Istalgan kategoriyangizni tanlang va o'zingiz xohlagan
             e'loningizni joylashtiring</p>
-            <a class="btn btn-primary" href="#!">E'lon joylashtirish</a>
+            <a class="btn btn-primary" href="/posters/add">E'lon joylashtirish</a>
         </div>
     </div>
     <!-- Call to Action-->
@@ -19,9 +19,14 @@
 
     <div class="card  my-5 py-4 text-center">
         <div class="card-body">
-            <form class="row g-3">
+            <form class="row g-3" action="/posters" method="GET">
                 <label for="search" class="visually-hidden">Qidiruv</label>
-                <input type="text" class="form-control form-control-lg" id="search" placeholder="E'lonlar qidiruvi...">
+                <input 
+                    type="text" 
+                    class="form-control form-control-lg" 
+                    id="search" 
+                    placeholder="E'lonlar qidiruvi..."
+                    name="search">
                 </div>
                 <div class="col-auto">
                 <button type="submit" class="btn btn-primary btn-lg mb-3">Izlash</button>

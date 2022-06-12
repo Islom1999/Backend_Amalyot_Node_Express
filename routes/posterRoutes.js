@@ -8,9 +8,9 @@ const { getPosterPage,
     deletePoster } = require('../controllers/posterController')
     
 const upload = require('../utils/fileUpload')
-const {protected, guest} = require('../middlewares/auth')
+const {protected} = require('../middlewares/auth')
 
-const router = Router()
+const router = Router() 
 
 router.get('/', getPosterPage)
 router.get('/add', protected, addNewPosterPage)
