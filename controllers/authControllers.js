@@ -37,8 +37,6 @@ const registerNewUser = async (req, res) => {
     if(!req.session.isLogin){
         try{
             const {email, username, phone, password, password2} = req.body
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash(password, salt)
             const userExist = await User.findOne({email})
 
             if(userExist){
@@ -53,7 +51,7 @@ const registerNewUser = async (req, res) => {
                 email,
                 username,
                 phone,
-                password: hashedPassword
+                password
             })
 
             return res.redirect('/auth/login')

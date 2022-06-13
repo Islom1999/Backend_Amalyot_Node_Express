@@ -1,20 +1,18 @@
 const Poster = require('../models/posterModel')
 const User = require('../models/userModel')
+const filtering = require('../utils/filtering')
 
 // @Route      GET  /posters 
 // @Desc       get all posters
 // @access     Public
 const getPosterPage = async (req,res) => {
     try{
-        /*
+
         if(req.query.search){
             const {search} = req.query 
-            const posters = await Poster.searchFull(search, (err, data) => {
-                console.log(data)
-                if(err) throw new Error  
-            }).lean() 
+            const posters = await Poster.searchPartial(search).lean() 
 
-            return res.status(200).render('/posters/posterResults', {
+            return res.render('poster/searchResults', {
                 title: 'Search Results',
                 url: process.env.URL,
                 posters: posters.reverse(),
@@ -23,15 +21,30 @@ const getPosterPage = async (req,res) => {
             })
             
         } 
-        */
+
+        if(req.query){
+            const {category, from, to, region} = req.query
+            const filterings = filtering(category, from, to, region)
+            const posters = await Poster.find(filterings).lean()
+            
+            return res.render('poster/searchResults', {
+                title: 'Filter Results',
+                url: process.env.URL,
+                posters: posters.reverse(),
+                querySearch: req.query.search,
+                user: req.session.user,
+                filtering: {category, from, to, region}
+            })
+        }
+
 
         const posters = await Poster.find().lean()
-        res.render('poster/posters', {
-            title: 'Poster Page',
-            url: process.env.URL,
-            posters: posters.reverse(),
-            user: req.session.user
-        })
+            return res.render('poster/posters', {
+                title: 'Poster Page',
+                url: process.env.URL,
+                posters: posters.reverse(),
+                user: req.session.user
+            })
         
 
     }catch(err){
@@ -169,7 +182,7 @@ const deletePoster = async (req, res) => {
             res.redirect('/posters')
         }
         catch(err){
-            console.log(err)
+            console.log(err) 
         }
     }
 }

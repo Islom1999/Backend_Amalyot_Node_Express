@@ -7,7 +7,7 @@ const getHomePage = async (req,res) => {
     const poster = await Poster.find().lean()
     res.render('home',{
         title: 'Home Page',  
-        poster,  
+        poster: poster.reverse().slice(0,8),  
         user: req.session.user, 
         isLogin: req.session.isLogin,
         url: process.env.URL

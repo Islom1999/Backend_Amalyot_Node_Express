@@ -36,6 +36,11 @@ const PosterSchema = new Schema({
         type: Number, 
         default: 1
     },
+    category: {
+        type: String,
+        required: true,
+        enum: ['realty', 'transport', 'electronics', 'jobs']
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: "User" 
@@ -44,7 +49,7 @@ const PosterSchema = new Schema({
     timestamps: true
 })
 
-/*
+
 // err bor searchPartial and searchFull
 // creating index
 PosterSchema.index({
@@ -53,20 +58,20 @@ PosterSchema.index({
 })
 
 PosterSchema.statics = {
-    searchPartial: function(q,callback){
+    searchPartial: function(q){
         return this.find({
             $or: [
                 {'title': new RegExp(q, "gi")},
                 {'description': new RegExp(q, "gi")}
             ]
-        }, callback)
+        })
     },
-    searchFull: function(q,callback){
+    searchFull: function(q){
         return this.find({
             $text: {$search: q, $caseSensitive: false}
-        }, callback)
+        })
     }
 }
-*/
+
 
 module.exports = model('Poster', PosterSchema)
