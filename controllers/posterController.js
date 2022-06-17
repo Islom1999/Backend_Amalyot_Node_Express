@@ -7,6 +7,14 @@ const filtering = require('../utils/filtering')
 // @access     Public
 const getPosterPage = async (req,res) => {
     try{
+        const pageLimit = 10
+        const limit = parseInt(req.query.limit) || 10
+        const page = parseInt(req.query.page)
+        const total = await Poster.countDocuments()
+
+        if(req.url == '/'){
+            return res.redirect(`?page=1&limit=${limit}`)
+        }
 
         if(req.query.search){
             const {search} = req.query 
@@ -17,12 +25,17 @@ const getPosterPage = async (req,res) => {
                 url: process.env.URL,
                 posters: posters.reverse(),
                 querySearch: req.query.search,
-                user: req.session.user
+                user: req.session.user,
+                pagination: { 
+                    page,
+                    limit,
+                    pageCount: Math.ceil(posters.length / limit)
+                }
             })
             
         } 
 
-        if(req.query){
+        if(req.query.category || req.query.from || req.query.to || req.query.region){
             const {category, from, to, region} = req.query
             const filterings = filtering(category, from, to, region)
             const posters = await Poster.find(filterings).lean()
@@ -33,17 +46,32 @@ const getPosterPage = async (req,res) => {
                 posters: posters.reverse(),
                 querySearch: req.query.search,
                 user: req.session.user,
-                filtering: {category, from, to, region}
+                filtering: {category, from, to, region},
+                pagination: { 
+                    page,
+                    limit,
+                    pageCount: Math.ceil(posters.length / limit)
+                }
             })
         }
 
 
-        const posters = await Poster.find().lean()
+        const posters = await Poster
+        .find()
+        .sort({createdAt: -1})
+        .skip((page*limit)-limit)   //birinchidagi qanchadur elementni tashlab ketadi
+        .limit(limit)  //nechta elon kk bo'lsa shuncha qaytaradi
+        .lean()
             return res.render('poster/posters', {
                 title: 'Poster Page',
                 url: process.env.URL,
                 posters: posters.reverse(),
-                user: req.session.user
+                user: req.session.user,
+                pagination: { 
+                    page,
+                    limit,
+                    pageCount: Math.ceil(total / limit)
+                }
             })
         
 
@@ -130,12 +158,16 @@ const getEditPosterPage = async (req,res) => {
     if(req.session.isLogin){
         try{
             const poster = await Poster.findById(req.params.id).lean()
-            res.render('poster/editPoster', {
-                title: 'Edit Page',
-                url: process.env.URL,
-                poster,
-                user: req.session.user
-            })
+            if(req.session.user._id.toString() == poster.author.toString()){
+                res.render('poster/editPoster', {
+                    title: 'Edit Page',
+                    url: process.env.URL,
+                    poster,
+                    user: req.session.user
+                })
+            }else{
+                res.redirect(`/posters/${req.params.id}`) 
+            }
         }catch(err){
             console.log(err)
         }
@@ -178,8 +210,15 @@ const updatePoster = async (req,res) => {
 const deletePoster = async (req, res) => {
     if(req.session.isLogin){
         try{
-            await Poster.findByIdAndRemove(req.params.id)
-            res.redirect('/posters')
+            const poster = await Poster.findById(req.params.id).lean()
+            if(req.session.user._id.toString() == poster.author.toString()){
+                await Poster.findByIdAndRemove(req.params.id)
+                res.redirect('/posters')   
+            }else{ 
+                req.flash("noOwnPoster", "Siz faqat o'zingizni postingizni o'chira olasiz")
+                
+                res.redirect(`/posters/${req.params.id}`) 
+            }
         }
         catch(err){
             console.log(err) 

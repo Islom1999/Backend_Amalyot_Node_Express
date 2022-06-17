@@ -38,7 +38,7 @@ const PosterSchema = new Schema({
     },
     category: {
         type: String,
-        required: true,
+        required: false,
         enum: ['realty', 'transport', 'electronics', 'jobs']
     },
     author: {
@@ -46,7 +46,7 @@ const PosterSchema = new Schema({
         ref: "User" 
     }
 },{
-    timestamps: true
+    timestamps: true  
 })
 
 

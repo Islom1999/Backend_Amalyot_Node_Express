@@ -6,6 +6,8 @@ const Handlebars = require('handlebars')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
 const flash = require('connect-flash')
+const helmet = require("helmet")
+const compression = require('compression')
 const connectDB = require('./config/db')
 const helpers = require('./utils/hbsHelpers')
 
@@ -41,6 +43,8 @@ app.use(session({
 }))
 
 app.use(flash())
+app.use(helmet())
+app.use(compression())
 
 // set static folder public
 app.use(express.static(path.join(__dirname, 'public')))
